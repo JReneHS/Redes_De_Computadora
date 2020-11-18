@@ -31,6 +31,8 @@
 
 unsigned char MACorigen[6];
 unsigned char MACbroadcast[6] = {0xff,0xff,0xff,0xff,0xff,0xff};
+unsigned char MACF1[6];
+unsigned char MACF2[6];
 unsigned char ethertype[2] = {0x0c,0x0c};
 unsigned char IPOrigen[4];
 unsigned char MaskSR[4];
@@ -126,16 +128,62 @@ void imprimirTrama(unsigned char *trama,int tam) {
     printf("\n\n");
 }
 
-void recibirTrama(int ds, unsigned char *trama) {
-    int tam = recvfrom(ds,trama,1514,0,NULL,0); // Descriptor de Socket,buffer,tam buff, flag, struct de socket, tam socket
-    if(tam==-1) {
-        perror("\nError al Recibir Trama");
-        exit(0);
+void filtrarTrama() {
+    unsigned char select[1];
+    int MF1[6];
+    int MF2[6];
+    printf("\nFiltrar MAC personal en Dir. Destino Precione (y/Y): ");
+    gets(select);
+    if(select[0] == 'y' || select[0] == 'Y') {
+        memcpy(MACF1,MACorigen,6);
     } else {
-        imprimirTrama(trama,tam);
+        printf("\nIngrese Mac a Filtrar: ");
+        scanf("%x:%x:%x:%x:%x:%x",&MF1[0],&MF1[1],&MF1[2],&MF1[3],&MF1[4],&MF1[5]);
+        for(int i = 0; i < 6; i++){
+            sprintf(&MACF1[i],"%x",MF1[i]);
+        }
     }
-
+    printf("\nFiltrar MAC personal en Dir. Fuente Precione (y/Y): ");
+    gets(select);
+    if(select[0] == 'y' || select[0] == 'Y') {
+        memcpy(MACF2,MACorigen,6);
+    } else {
+        printf("\nIngrese Mac a Filtrar: ");
+        scanf("%x:%x:%x:%x:%x:%x",&MF2[0],&MF2[1],&MF2[2],&MF2[3],&MF2[4],&MF2[5]);
+        for(int i = 0; i < 6; i++){
+            sprintf(&MACF2[i],"%x",MF2[i]);
+        }
+    }
+    printf("La MAC Destino a filtrar es: ");
+    for(int i = 0; i < 5; i++){
+        printf("%.2x:",MACF1[i]);
+    }
+    printf("%.2x\n\n",MACF1[5]);
+    printf("La MAC Origen a filtrar es: ");
+    for(int i = 0; i < 5; i++){
+        printf("%.2x:",MACF2[i]);
+    }
+    printf("%.2x\n\n",MACF2[5]);
 }
+
+void recibirTrama(int ds, unsigned char *trama) {
+    int tam;
+// Descriptor de Socket,buffer,tam buff, flag, struct de socket, tam socket
+    filtrarTrama();
+    while(1) {
+        tam = recvfrom(ds,trama,1514,0,NULL,0);
+        if(tam==-1) {
+            perror("\nError al Recibir Trama");
+            exit(0);
+        } else {
+            if(!memcmp(trama+0,MACF1,6) || !memcmp(trama+6,MACF2,6)) {
+                imprimirTrama(trama,tam);
+                //break;
+            }
+        }
+    }
+}
+
 
 int main ( int argc, char *argv[] )
 {
@@ -150,8 +198,8 @@ int main ( int argc, char *argv[] )
         perror("\n Exito al abrir el Socket");
     }
     index = obtenerDatos(packet_socket);
-    estructuraTrama(TramaEnv);
-    enviarTrama(packet_socket,index, TramaEnv);
+//    estructuraTrama(TramaEnv);
+//    enviarTrama(packet_socket,index, TramaEnv);
     recibirTrama(packet_socket, TramaRec);
     close(packet_socket);
     return 0;
