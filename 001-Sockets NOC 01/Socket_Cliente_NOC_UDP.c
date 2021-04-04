@@ -25,12 +25,13 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 
+
 int main ( int argc, char *argv[] )
 {
-    int udp_socket, lbind, tam, lrecv;
-    int i = 0;
-    unsigned char msj[512];
-    unsigned char paqRec[512];
+    int udp_socket, lbind, tam;
+
+    unsigned char msj[1024] = "Hola Red, soy ReniRiñon (Rene HS)";
+
     struct sockaddr_in LOCAL, REMOTO;
     udp_socket = socket(AF_INET, SOCK_DGRAM, 0);
     
@@ -56,46 +57,24 @@ int main ( int argc, char *argv[] )
     }
     else
     {
-        perror("\nExito al generar el Bind\n");
+        perror("\nExito al generar el Bind");
     }
 
     REMOTO.sin_family = AF_INET;
     REMOTO.sin_port = htons(8080); 
-    REMOTO.sin_addr.s_addr = inet_addr("192.168.1.75");
+    REMOTO.sin_addr.s_addr = inet_addr("192.168.1.67");
+    tam = sendto(udp_socket, msj, strlen(msj) + 1, 0, (struct sockaddr *)&REMOTO, sizeof(REMOTO));
     
-    do
+    if(tam == -1)
     {
-        i = 0;
-        while((msj[i++] = getchar()) != '\n');
-        msj[--i] = '\0';
-        fflush(stdin);
-        tam = sendto(udp_socket, msj, strlen(msj) + 1, 0, (struct sockaddr *)&REMOTO, sizeof(REMOTO));
-    
-        if(tam == -1)
-        {
-            perror("\Error al enviar el mensaje");
-            return 1;
-        }
-        else
-        {
-            perror("\nExito al enviar el mensaje\n");
-        }
-        lrecv = sizeof(REMOTO);
-        tam = recvfrom(udp_socket, paqRec, 512, 0, (struct sockaddr *)&REMOTO, &lrecv);
-    
-        if(tam == -1)
-        {
-            perror("\nError al Recibir el mensaje");
-            return 1;
-        }
-        else
-        {
-            printf("\nEl mensaje: %s\n\n", paqRec);
-        }
+        perror("\Error al enviar el mensaje");
+        return 1;
     }
-    while(msj[0] != '\0');
-    
-    
+    else
+    {
+        perror("\nExito al enviar el mensaje");
+    }
+
     printf("\n");
     close(udp_socket);
     return EXIT_SUCCESS;

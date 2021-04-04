@@ -62,9 +62,9 @@ int obtenerDatos(int ds){
         memcpy(MACorigen,nic.ifr_hwaddr.sa_data,6);
         printf("La MAC es: ");
         for(int i = 0; i < 5; i++){
-            printf("%2x:",MACorigen[i]);
+            printf("%.2x:",MACorigen[i]);
         }
-        printf("%2x\n\n",MACorigen[5]);
+        printf("%2.x\n\n",MACorigen[5]);
     }
 //Obtencion de la IP
     if(ioctl(ds,SIOCGIFADDR,&nic) == -1){
@@ -138,7 +138,7 @@ void filtrarTrama() {
         memcpy(MACF1,MACorigen,6);
     } else {
         printf("\nIngrese Mac a Filtrar: ");
-        scanf("%x:%x:%x:%x:%x:%x",&MF1[0],&MF1[1],&MF1[2],&MF1[3],&MF1[4],&MF1[5]);
+        scanf("%d:%d:%d:%d:%d:%d",&MF1[0],&MF1[1],&MF1[2],&MF1[3],&MF1[4],&MF1[5]);
         for(int i = 0; i < 6; i++){
             sprintf(&MACF1[i],"%x",MF1[i]);
         }
@@ -149,7 +149,7 @@ void filtrarTrama() {
         memcpy(MACF2,MACorigen,6);
     } else {
         printf("\nIngrese Mac a Filtrar: ");
-        scanf("%x:%x:%x:%x:%x:%x",&MF2[0],&MF2[1],&MF2[2],&MF2[3],&MF2[4],&MF2[5]);
+        scanf("%d:%d:%d:%d:%d:%d",&MF2[0],&MF2[1],&MF2[2],&MF2[3],&MF2[4],&MF2[5]);
         for(int i = 0; i < 6; i++){
             sprintf(&MACF2[i],"%x",MF2[i]);
         }
