@@ -10,8 +10,8 @@
  *       Revision:  none
  *       Compiler:  gcc
  *
- *         Author:  YOUR NAME (), 
- *   Organization:  
+ *         Author:  Juan Rene Hernandez Sanchez 
+ *   Organization:  ESCOM
  *
  * =====================================================================================
  */
@@ -107,7 +107,7 @@ int main ( int argc, char *argv[] )
     printf("\n\n");
     super.REMOTO.sin_family = AF_INET;
     super.REMOTO.sin_port = htons(8080); 
-    super.REMOTO.sin_addr.s_addr = inet_addr("192.168.1.67");
+    super.REMOTO.sin_addr.s_addr = inet_addr("192.168.100.6");
     fflush(stdin);
     if(pthread_create(&threadSend, NULL, Send, &super) != 0)
     {

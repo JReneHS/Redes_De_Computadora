@@ -62,7 +62,7 @@ int main ( int argc, char *argv[] )
 
     REMOTO.sin_family = AF_INET;
     REMOTO.sin_port = htons(8080); 
-    REMOTO.sin_addr.s_addr = inet_addr("192.168.1.67");
+    REMOTO.sin_addr.s_addr = inet_addr("192.168.100.6");
     tam = sendto(udp_socket, msj, strlen(msj) + 1, 0, (struct sockaddr *)&REMOTO, sizeof(REMOTO));
     
     if(tam == -1)

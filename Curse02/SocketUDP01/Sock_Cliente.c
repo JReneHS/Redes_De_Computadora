@@ -51,12 +51,12 @@ int main(int argc, const char *argv[])
       tam=sendto(udp_socket, msj, 23, 0, (struct sockaddr *)&remota, sizeof(remota));
       if(tam == -1)
       {
-	perror("\nError al enviar mensaje");
-	exit(1);
+        perror("\nError al enviar mensaje");
+        exit(1);
       }
       else
       {
-	perror("\nExito al enviar mensaje");
+        perror("\nExito al enviar mensaje");
       }
     }
   }

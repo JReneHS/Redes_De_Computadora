@@ -1,3 +1,19 @@
+
+/*
+ * =====================================================================================
+ *
+ *       Filename:  protocoloMAC.c
+ *
+ *    Description:  Relleno manual encabezado MAC
+ *
+ *       Revision:  none
+ *       Compiler:  gcc -o mac protocoloMAC.c
+ *
+ *         Author:  Juan Rene Hernandez Sanchez, jhernandezs1509@alumno.ipn.mx
+ *   Organization:  ESCOM
+ *
+ * =====================================================================================
+ */
 #include<sys/socket.h>
 #include<linux/if_packet.h>
 #include<net/ethernet.h>

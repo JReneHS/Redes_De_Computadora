@@ -1,18 +1,18 @@
-/*#######################################################################################
-Alumna: Sanchez Sosa Edith Kathya
-Practica: 2 Protocolo ARP.
-Redes de computadoras
-Profesor: Gilverto Sanchez Quintanilla
-#########################################################################################
-*/
-
-//genera txtsalida
-
 /*
-##############################################################################################
-Librerias
-##############################################################################################
-*/
+ * =====================================================================================
+ *
+ *       Filename:  protocoloARP.cpp
+ *
+ *    Description:  protocoloARP
+ *
+ *        Version:  1.0
+ *       Compiler:  gcc
+ *
+ *         Author:  Juan Rene Hernandez Sanchez, jhernandezs1509@alumno.ipn.mx
+ *   Organization:  ESCOM
+ *
+ * =====================================================================================
+ */
 #include <sys/socket.h>
 #include <linux/if_packet.h>
 #include <net/ethernet.h> /* the L2 protocols */
@@ -164,7 +164,7 @@ void recibir(int ds, unsigned char *trama,FILE *guarda,char ip[20])
 int obtenerDatos(int ds, char ip[])
 {
     struct ifreq nic;
-    unsigned char nombre[20]={"enp2s0"};//poner personal
+    unsigned char nombre[20]={"wlp1s0"};//poner personal
     int i, index;
 
     inet_aton(ip,IPdestino);
